@@ -11,6 +11,20 @@
 
 #include <Arduino.h>
 
+typedef uint8_t   RegistedType;
+typedef uint16_t  DeviceAddrType;
+typedef uint8_t   FirstType;
+typedef uint8_t   SecondType;
+typedef uint8_t   GroupType;
+typedef uint8_t   OnoffType;
+typedef uint8_t   LightnessType;
+typedef uint8_t   ModeType;
+typedef uint16_t  TemperatureType;
+typedef uint16_t  ColorHType;
+typedef uint8_t   ColorSType;
+typedef uint8_t   ColorVType;
+typedef uint32_t  RegisterTimeType;
+
 typedef struct{
   uint8_t  isRegisted;
   uint16_t device_addr;
