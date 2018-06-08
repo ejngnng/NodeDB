@@ -2,9 +2,12 @@
 #include "NodeDB.h"
 
 void setup() {
-    // put your setup code here, to run once:
+    Serial.begin(115200);
 }
 
 void loop() {
-    // put your main code here, to run repeatedly:
+
+    Serial.printf("unsigned long size: %d\n", sizeof(unsigned long));
+    Serial.printf("unsigned int size: %d\n", sizeof(unsigned int));
+    delay(500);
 }
