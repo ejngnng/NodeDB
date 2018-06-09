@@ -20,6 +20,7 @@
 class NodeDB{
 public:
   NodeDB();
+  NodeDB(int start);
   NodeDB(uint8_t *mac);
   ~NodeDB(){};
 
@@ -101,11 +102,16 @@ public:
   unsigned int count();
 
 private:
+  int   _start;
   unsigned char _name[6];
   unsigned char _id;     // auto increase
-  unsigned char _addr;
+  unsigned char _addr;   // eeprom address
   unsigned char _counter;
   node _meshNode;
+  void slow_write(int addr, uint8_t value);
+  uint8_t slow_read(int addr);
+  void fast_write(int addr, uint8_t value);
+  void fast_read(int addr, uint8_t *value);
 
 
 
