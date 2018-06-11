@@ -50,32 +50,45 @@ public:
   void getSize(uint8_t *size);
   bool isRegisted();
   void setRegisted(bool registed);
-  void setAddr(uint16_t addr);
-  void getAddr(uint16_t *addr);
+
+  void setAddr(DeviceAddrType addr);
+  DeviceAddrType getAddr();
+
   void setType(uint16_t type);
-  void getType(uint16_t *type);
-  void setFirstType(uint8_t type);
-  void getFirstType(uint8_t *type);
-  void setSecondType(uint8_t type);
-  void getSecondType(uint8_t *type);
-  void setGroup(uint8_t group);
-  void getGroup(uint8_t *group);
-  void setOnoff(uint8_t value);
-  void getOnoff(uint8_t *value);
-  void setLightness(uint8_t value);
-  void getLightness(uint8_t *value);
-  void setMode(uint8_t value);
-  void getMode(uint8_t *value);
-  void setTemperature(uint16_t value);
-  void getTemperature(uint16_t *value);
-  void setColorH(uint16_t value);
-  void setColorS(uint8_t value);
-  void setColorV(uint8_t value);
-  void getColorH(uint16_t *value);
-  void getColorS(uint8_t *value);
-  void getColorV(uint8_t *value);
-  void setRegisterTime(uint32_t value);
-  void getRegisterTime(uint32_t *value);
+  uint16_t getType();
+
+  void setFirstType(FirstType type);
+  FirstType getFirstType();
+
+  void setSecondType(SecondType type);
+  SecondType getSecondType();
+
+  void setGroup(GroupType group);
+  GroupType getGroup();
+
+  void setOnoff(OnoffType value);
+  OnoffType getOnoff();
+
+  void setLightness(LightnessType value);
+  LightnessType getLightness();
+
+  void setMode(ModeType value);
+  ModeType getMode();
+
+  void setTemperature(TemperatureType value);
+  TemperatureType getTemperature();
+
+  void setColorH(ColorHType value);
+  void setColorS(ColorSType value);
+  void setColorV(ColorVType value);
+
+  ColorHType getColorH();
+  ColorSType getColorS();
+  ColorVType getColorV();
+
+  void setRegisterTime(RegisterTimeType value);
+  RegisterTimeType getRegisterTime();
+  
 private:
   NODE_META _node;
 };

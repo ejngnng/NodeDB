@@ -11,11 +11,16 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 #include "node.h"
+#include <ESP8266WiFi.h>
 
 #define DEBUG_DB  Serial
 
+#define SLOW_OP   1
+#define FAST_OP   0
+
 #define NODE_MAX_SIZE 100
 
+class node;
 
 class NodeDB{
 public:
@@ -25,7 +30,7 @@ public:
   ~NodeDB(){};
 
   void setDBName(uint8_t *mac);
-  uint8_t insertNode(node *meshnode);
+  int insertNode(node *meshnode);
 
   void getNodeById(uint8_t id, node *meshNode);
   void getNodeByAddr(uint8_t addr, node *meshNode);
@@ -76,7 +81,7 @@ public:
   void updateGroupByAddr(DeviceAddrType addr, GroupType group);
 
   void updateOnoffById(uint8_t id, OnoffType onoff);
-  void getOnoffByAddr(DeviceAddrType addr, OnoffType onoff);
+  void updateOnoffByAddr(DeviceAddrType addr, OnoffType onoff);
 
   void updateModeById(uint8_t id, ModeType mode);
   void updateModeByAddr(DeviceAddrType addr, ModeType mode);
@@ -104,16 +109,30 @@ public:
 private:
   int   _start;
   unsigned char _name[6];
-  unsigned char _id;     // auto increase
-  unsigned char _addr;   // eeprom address
+  int _id;     // auto increase
+  int _addr;   // eeprom address
   unsigned char _counter;
   node _meshNode;
+  int _id_eeprom;
+  int _isregiste_eeprom;
+  int _device_addr_eeprom;
+  int _firstType_eeprom;
+  int _secondType_eeprom;
+  int _group_eeprom;
+  int _onof_eeprom;
+  int _lightness_eeprom;
+  int _mode_eeprom;
+  int _temperature_eeprom;
+  int _color_h_eeprom;
+  int _color_s_eeprom;
+  int _color_v_eeprom;
+  int _registerTime_eeprom;
+  void calcu_insert_eeprom();
+  void calcu_select_eeprom(int id);
   void slow_write(int addr, uint8_t value);
-  uint8_t slow_read(int addr);
+  void slow_read(int addr, uint8_t *value);
   void fast_write(int addr, uint8_t value);
   void fast_read(int addr, uint8_t *value);
-
-
 
 };
 
