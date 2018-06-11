@@ -14,6 +14,7 @@ NodeDB::NodeDB(){
   _addr = 0;
   memset(_name, 0, 6);
   EEPROM.begin(NODE_MAX_SIZE * sizeof(node) + _start);
+  clear_db();
 }
 
 
@@ -23,6 +24,7 @@ NodeDB::NodeDB(int start){
   _addr = 0;
   memset(_name, 0, 6);
   EEPROM.begin(NODE_MAX_SIZE * sizeof(node) + _start);
+  clear_db();
 }
 
 NodeDB::NodeDB(uint8_t *mac){
@@ -32,6 +34,14 @@ NodeDB::NodeDB(uint8_t *mac){
   memset(_name, 0, 6);
   memcpy(_name, mac, 6*sizeof(uint8_t));
   EEPROM.begin(NODE_MAX_SIZE * sizeof(node) + _start);
+  clear_db();
+}
+
+void NodeDB::clear_db(){
+  for(uint16_t i=0; i<(NODE_MAX_SIZE * sizeof(node) + _start); i++){
+    EEPROM.write(i, 0);
+  }
+  EEPROM.commit();
 }
 
 void NodeDB::calcu_insert_eeprom(){
@@ -84,7 +94,10 @@ int NodeDB::insertNode(node *meshNode){
   slow_write(_id_eeprom, _id);   // id
   slow_write(_isregiste_eeprom, meshNode->isRegisted() ? 0x01 : 0); // isRegisted
 
-  slow_write(_device_addr_eeprom, meshNode->getAddr()); // device addr
+  uint16_t addr = 0;
+  addr = meshNode->getAddr();
+  slow_write(_device_addr_eeprom, addr >> 8 & 0xFF); // device addr
+  slow_write(_device_addr_eeprom + 1, addr & 0xFF);
 
   slow_write(_firstType_eeprom, meshNode->getFirstType()); // first type
 
@@ -98,17 +111,27 @@ int NodeDB::insertNode(node *meshNode){
 
   slow_write(_mode_eeprom, meshNode->getMode());
 
-  slow_write(_temperature_eeprom, meshNode->getTemperature());
+  uint16_t temperature = 0;
+  temperature = meshNode->getTemperature();
+  slow_write(_temperature_eeprom, temperature >> 8 & 0xFF);
+  slow_write(_temperature_eeprom + 1, temperature & 0xFF);
 
-  slow_write(_color_h_eeprom, meshNode->getColorH());
+  uint16_t color_h = 0;
+  color_h = meshNode->getColorH();
+  slow_write(_color_h_eeprom, color_h >> 8 & 0xFF);
+  slow_write(_color_h_eeprom + 1, color_h & 0xFF);
 
   slow_write(_color_s_eeprom, meshNode->getColorS());
 
   slow_write(_color_v_eeprom, meshNode->getColorV());
 
-  slow_write(_registerTime_eeprom, meshNode->getRegisterTime());
+  uint32_t regTime = 0;
+  regTime = meshNode->getRegisterTime();
+  slow_write(_registerTime_eeprom, regTime >> 24 & 0xFF);
+  slow_write(_registerTime_eeprom + 1, regTime >> 16 & 0xFF);
+  slow_write(_registerTime_eeprom + 2, regTime >> 8 & 0xFF);
+  slow_write(_registerTime_eeprom + 3, regTime & 0xFF);
 
-  EEPROM.commit();
   _id ++;
 #else
 
@@ -156,8 +179,12 @@ void NodeDB::getNodeById(uint8_t id, node *meshNode){
   slow_read(_temperature_eeprom, &temp);
   meshNode->setTemperature(temp);
 
+  uint8_t color_h_H = 0;
+  uint8_t color_h_L = 0
+  slow_read(_color_h_eeprom, &color_h_H);
+  slow_read(_color_h_eeprom + 1, &color_h_L);
   ColorHType color_h = 0;
-  slow_read(_color_h_eeprom, &color_h);
+  color_h = (color_h | color_h_H << 8) | color_h_L;
   meshNode->setColorH(color_h);
 
   ColorSType color_s = 0;
@@ -192,6 +219,18 @@ void NodeDB::getNodeByAddr(uint8_t addr, node *meshNode){
     }
 
   }
+}
+
+void NodeDB::getNodeAddrById(uint8_t id, DeviceAddrType *addr){
+  calcu_select_eeprom(id);
+  uint8_t addr_h = 0;
+  uint8_t addr_l = 0;
+  slow_read(_device_addr_eeprom, &addr_h);
+  slow_read(_device_addr_eeprom + 1, &addr_l);
+
+  uint16_t buf = 0;
+  buf = (buf | addr_h) << 8 | addr_l;
+  *addr = buf;
 }
 
 void NodeDB::getNodeRegistedById(uint8_t id, RegistedType *isRegisted){
@@ -270,6 +309,15 @@ void NodeDB::getNodeOnoffByAddr(DeviceAddrType addr, OnoffType *onoff){
 
 }
 
+void NodeDB::getNodeLightnessById(uint8_t id, LightnessType *lightness){
+  calcu_select_eeprom(id);
+  slow_read(_lightness_eeprom, lightness);
+}
+
+void NodeDB::getNodeLightnessByAddr(DeviceAddrType addr, LightnessType *lightness){
+
+}
+
 void NodeDB::getNodeModeById(uint8_t id, ModeType *mode){
   calcu_select_eeprom(id);
   slow_read(_mode_eeprom, mode);
@@ -281,12 +329,16 @@ void NodeDB::getNodeModeByAddr(DeviceAddrType addr, ModeType *mode){
 
 void NodeDB::getNodeTemperatureById(uint8_t id, TemperatureType *temperature){
   calcu_select_eeprom(id);
-  unsigned char length = sizeof(TemperatureType);
-  for(unsigned char i = 0; i<length; i++){
-    uint8_t buf = 0;
-    slow_read(_temperature_eeprom + i, &buf);
-    *temperature = (*temperature | buf) << 8;
-  }
+  uint8_t temp_H = 0;
+  uint8_t temp_L = 0;
+  slow_read(_temperature_eeprom, &temp_H);
+  slow_read(_temperature_eeprom + 1, &temp_L);
+  #ifdef DEBUG_DB
+  DEBUG_DB.printf("color h high low bits: %02x %02x\n", temp_H, temp_L);
+  #endif
+  uint16_t buf = 0;
+  buf = (buf | temp_H) << 8 | temp_L;
+  *temperature = buf;
 }
 
 void NodeDB::getNodeTemperatureByAddr(DeviceAddrType addr, TemperatureType *temperature){
@@ -295,12 +347,16 @@ void NodeDB::getNodeTemperatureByAddr(DeviceAddrType addr, TemperatureType *temp
 
 void NodeDB::getNodeColorHById(uint8_t id, ColorHType *color_h){
   calcu_select_eeprom(id);
-  unsigned char length = sizeof(ColorHType);
-  for(unsigned char i = 0; i<length; i++){
-    uint8_t buf = 0;
-    slow_read(_color_h_eeprom + i, &buf);
-    *color_h = (*color_h | buf) << 8;
-  }
+  uint8_t color_H = 0;
+  uint8_t color_L = 0;
+  slow_read(_color_h_eeprom, &color_H);
+  slow_read(_color_h_eeprom + 1, &color_L);
+  #ifdef DEBUG_DB
+  DEBUG_DB.printf("color h high low bits: %02x %02x\n", color_H, color_L);
+  #endif
+  uint16_t temp = 0;
+  temp = (temp | color_H) << 8 | color_L;
+  *color_h = temp;
 }
 
 void NodeDB::getNodeColorHByAddr(DeviceAddrType addr, ColorHType *color_h){
@@ -447,6 +503,18 @@ void NodeDB::updateRegTimeByAddr(DeviceAddrType addr, RegisterTimeType regTime){
 
 unsigned int NodeDB::count(){
   return (_id - 1);
+}
+
+void NodeDB::deleteNodeById(uint8_t id){
+  int start_addr = (id - 1) * (sizeof(node) + 1) + _start;
+  for(unsigned char i = 0; i < sizeof(node); i++){
+    slow_write(start_addr + i, 0);
+    EEPROM.commit();
+  }
+}
+
+void NodeDB::deleteNodeByAddr(DeviceAddrType addr){
+
 }
 
 void NodeDB::slow_write(int addr, uint8_t value){

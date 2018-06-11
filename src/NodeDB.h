@@ -35,6 +35,8 @@ public:
   void getNodeById(uint8_t id, node *meshNode);
   void getNodeByAddr(uint8_t addr, node *meshNode);
 
+  void getNodeAddrById(uint8_t id, DeviceAddrType *addr);
+
   void getNodeRegistedById(uint8_t id, RegistedType *isRegisted);
   void getNodeRegistedByAddr(DeviceAddrType addr, RegistedType *isRegisted);
 
@@ -49,6 +51,9 @@ public:
 
   void getNodeOnoffById(uint8_t id, OnoffType *onoff);
   void getNodeOnoffByAddr(DeviceAddrType addr, OnoffType *onoff);
+
+  void getNodeLightnessById(uint8_t id, LightnessType *lightness);
+  void getNodeLightnessByAddr(DeviceAddrType addr, LightnessType *lightness);
 
   void getNodeModeById(uint8_t id, ModeType *mode);
   void getNodeModeByAddr(DeviceAddrType addr, ModeType *mode);
@@ -125,6 +130,7 @@ private:
   int _color_s_eeprom;
   int _color_v_eeprom;
   int _registerTime_eeprom;
+  void clear_db();
   void calcu_insert_eeprom();
   void calcu_select_eeprom(int id);
   void slow_write(int addr, uint8_t value);
