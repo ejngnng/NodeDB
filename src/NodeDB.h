@@ -111,8 +111,6 @@ private:
   unsigned char _name[6];
   int _id;     // auto increase
   int _addr;   // eeprom address
-  unsigned char _counter;
-  node _meshNode;
   int _id_eeprom;
   int _isregiste_eeprom;
   int _device_addr_eeprom;
