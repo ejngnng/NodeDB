@@ -10,6 +10,7 @@
   "version": "1.0.0",
   "authors": {
     "name": "ejngnng",
+    "email":"ejngnng@163.com",
     "url": "https://ejngnng.github.io"
   },
   "exclude": "tests",
