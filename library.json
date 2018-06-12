@@ -1,0 +1,19 @@
+{
+  "name": "NodeDB",
+  "keywords": "flash, database, eeprom, mesh node",
+  "description": "esp8266 flash database for mesh node ",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ejngnng/NodeDB.git"
+  },
+  "version": "1.0.0",
+  "authors": {
+    "name": "ejngnng",
+    "url": "https://ejngnng.github.io"
+  },
+  "exclude": "tests",
+  "examples":"examples/*/*",
+  "frameworks": "arduino",
+  "platforms": "espressif"
+}
