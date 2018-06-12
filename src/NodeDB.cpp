@@ -315,7 +315,17 @@ void NodeDB::getNodeLightnessById(uint8_t id, LightnessType *lightness){
 }
 
 void NodeDB::getNodeLightnessByAddr(DeviceAddrType addr, LightnessType *lightness){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      slow_read(_lightness_eeprom, lightness);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::getNodeModeById(uint8_t id, ModeType *mode){
@@ -324,7 +334,17 @@ void NodeDB::getNodeModeById(uint8_t id, ModeType *mode){
 }
 
 void NodeDB::getNodeModeByAddr(DeviceAddrType addr, ModeType *mode){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      slow_read(_mode_eeprom, mode);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::getNodeTemperatureById(uint8_t id, TemperatureType *temperature){
@@ -342,7 +362,17 @@ void NodeDB::getNodeTemperatureById(uint8_t id, TemperatureType *temperature){
 }
 
 void NodeDB::getNodeTemperatureByAddr(DeviceAddrType addr, TemperatureType *temperature){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      getNodeTemperatureById(i, temperature);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::getNodeColorHById(uint8_t id, ColorHType *color_h){
@@ -360,7 +390,17 @@ void NodeDB::getNodeColorHById(uint8_t id, ColorHType *color_h){
 }
 
 void NodeDB::getNodeColorHByAddr(DeviceAddrType addr, ColorHType *color_h){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      getNodeColorHById(i, color_h);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::getNodeColorSById(uint8_t id, ColorSType *color_s){
@@ -369,7 +409,17 @@ void NodeDB::getNodeColorSById(uint8_t id, ColorSType *color_s){
 }
 
 void NodeDB::getNodeColorSByAddr(DeviceAddrType addr, ColorSType *color_s){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      getNodeColorSById(i, color_s);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::getNodeColorVById(uint8_t id, ColorVType *color_v){
@@ -378,7 +428,17 @@ void NodeDB::getNodeColorVById(uint8_t id, ColorVType *color_v){
 }
 
 void NodeDB::getNodeColorVByAddr(DeviceAddrType addr, ColorVType *color_v){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      getNodeColorVById(i, color_v);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::getNodeRegTimeById(uint8_t id, RegisterTimeType *regTime){
@@ -392,7 +452,17 @@ void NodeDB::getNodeRegTimeById(uint8_t id, RegisterTimeType *regTime){
 }
 
 void NodeDB::getNodeRegTimeByAddr(DeviceAddrType addr, RegisterTimeType *regTime){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      getNodeRegTimeById(i, regTime);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateRegistedById(uint8_t id, RegistedType isRegisted){
@@ -401,7 +471,17 @@ void NodeDB::updateRegistedById(uint8_t id, RegistedType isRegisted){
 }
 
 void NodeDB::updateRegistedByAddr(DeviceAddrType addr, RegistedType isRegisted){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateRegistedById(i, isRegisted);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateFirstTypeById(uint8_t id, FirstType type){
@@ -410,7 +490,17 @@ void NodeDB::updateFirstTypeById(uint8_t id, FirstType type){
 }
 
 void NodeDB::updateFirstTypeByAddr(DeviceAddrType addr, FirstType type){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateFirstTypeById(i, type);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateSecondTypeById(uint8_t id, SecondType type){
@@ -419,7 +509,17 @@ void NodeDB::updateSecondTypeById(uint8_t id, SecondType type){
 }
 
 void NodeDB::updateSecondTypeByAddr(DeviceAddrType addr, SecondType type){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateSecondTypeById(i, type);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateGroupById(uint8_t id, GroupType group){
@@ -428,7 +528,17 @@ void NodeDB::updateGroupById(uint8_t id, GroupType group){
 }
 
 void NodeDB::updateGroupByAddr(DeviceAddrType addr, GroupType group){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateGroupById(i, group);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateOnoffById(uint8_t id, OnoffType onoff){
@@ -437,7 +547,17 @@ void NodeDB::updateOnoffById(uint8_t id, OnoffType onoff){
 }
 
 void NodeDB::updateOnoffByAddr(DeviceAddrType addr, OnoffType onoff){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateOnoffById(i, onoff);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateModeById(uint8_t id, ModeType mode){
@@ -446,7 +566,17 @@ void NodeDB::updateModeById(uint8_t id, ModeType mode){
 }
 
 void NodeDB::updateModeByAddr(DeviceAddrType addr, ModeType mode){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateModeById(i, mode);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateTemperatureById(uint8_t id, TemperatureType temperature){
@@ -455,7 +585,17 @@ void NodeDB::updateTemperatureById(uint8_t id, TemperatureType temperature){
 }
 
 void NodeDB::updateTemperatureByAddr(DeviceAddrType addr, TemperatureType temperature){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateTemperatureById(i, temperature);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateColorHById(uint8_t id, ColorHType color_h){
@@ -465,7 +605,17 @@ void NodeDB::updateColorHById(uint8_t id, ColorHType color_h){
 }
 
 void NodeDB::updateColorHByAddr(DeviceAddrType addr, ColorHType color_h){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateColorHById(i, color_h);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateColorSById(uint8_t id, ColorSType color_s){
@@ -474,7 +624,17 @@ void NodeDB::updateColorSById(uint8_t id, ColorSType color_s){
 }
 
 void NodeDB::updateColorSByAddr(DeviceAddrType addr, ColorSType color_s){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateColorSById(i, color_s);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateColorVById(uint8_t id, ColorVType color_v){
@@ -483,7 +643,17 @@ void NodeDB::updateColorVById(uint8_t id, ColorVType color_v){
 }
 
 void NodeDB::updateColorVByAddr(DeviceAddrType addr, ColorVType color_v){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateColorVById(i, color_v);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::updateRegTimeById(uint8_t id, RegisterTimeType regTime){
@@ -498,7 +668,17 @@ void NodeDB::updateRegTimeById(uint8_t id, RegisterTimeType regTime){
 }
 
 void NodeDB::updateRegTimeByAddr(DeviceAddrType addr, RegisterTimeType regTime){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      updateRegTimeById(i, regTime);
+      return;
+    }
+
+  }
 }
 
 unsigned int NodeDB::count(){
@@ -514,7 +694,17 @@ void NodeDB::deleteNodeById(uint8_t id){
 }
 
 void NodeDB::deleteNodeByAddr(DeviceAddrType addr){
+  for(unsigned char i = _id; i>0; i--){
+    calcu_select_eeprom(i);
 
+    uint8_t temp = 0;
+    slow_read(_device_addr_eeprom, &temp);
+    if(temp == addr){
+      deleteNodeById(i);
+      return;
+    }
+
+  }
 }
 
 void NodeDB::slow_write(int addr, uint8_t value){
